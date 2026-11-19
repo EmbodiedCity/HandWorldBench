@@ -1,0 +1,149 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="HandWorldBench: A Unified Benchmark for Hand-Centric World Models."><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://embodiedcity.github.io/HandWorldBench/"><title>HandWorldBench — Hand-Centric World Models</title><link rel="icon" href="assets/mark.svg"><link rel="preload" href="assets/fonts/google-sans-flex.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="style.css?v=overview15"><script defer src="app.js?v=organization16"></script><script defer src="research-demo.js?v=manuscript14"></script></head><body>
+<header>
+  <div class="header-brand">
+    <a class="brand" href="#">HandWorldBench</a>
+    <div class="header-affiliations" role="group" aria-label="Partner institutions">
+      <img src="assets/branding/tsinghua.webp" width="127" height="128" alt="Tsinghua University" title="Tsinghua University">
+      <img src="assets/branding/zhongguancun.webp" width="128" height="128" alt="Zhongguancun Academy" title="Zhongguancun Academy">
+      <img src="assets/branding/manifold-ai.webp" width="147" height="128" alt="Manifold AI" title="Manifold AI">
+    </div>
+  </div>
+  <nav aria-label="Main navigation"><a href="#paper">Paper</a><a href="#benchmark">Benchmark</a><a href="#unified-control">Unified Control</a><a href="#evaluation">Evaluation</a><a href="#results">Results</a></nav></header>
+<main><section class="hero" id="overview"><h1><img class="hero-wordmark" src="assets/branding/handworldbench.webp" width="1600" height="265" alt="HandWorldBench" fetchpriority="high"></h1><p class="hero-subtitle">A Unified Benchmark<br>for Hand-Centric World Models</p><div class="hero-tabs" id="hero-tabs" role="tablist" aria-label="Embodiment"></div><div class="carousel" id="carousel" aria-roledescription="carousel" aria-label="Three embodiments" tabindex="0"><div id="hero-media">
+  <div class="hero-card" role="button" data-index="0" data-position="active" data-case-id="ec1054249f1a30de459370ef">
+    <video data-hero-preview data-src="assets/hero/ego.mp4" poster="assets/hero/ego.jpg" muted loop playsinline preload="none" aria-label="Egocentric human hands"></video>
+  </div>
+  <div class="hero-card" role="button" data-index="1" data-position="next" data-case-id="sim_fb95207735126d14280c">
+    <video data-hero-preview data-src="assets/hero/simulated.mp4" poster="assets/hero/simulated.jpg" muted loop playsinline preload="none" aria-label="Simulated dexterous hands"></video>
+  </div>
+  <div class="hero-card" role="button" data-index="2" data-position="prev" data-case-id="real_997b251624d1adbc5fe9">
+    <video data-hero-preview data-src="assets/hero/real.mp4" poster="assets/hero/real.jpg" muted loop playsinline preload="none" aria-label="Two real dexterous hands"></video>
+  </div>
+</div><button class="carousel-arrow prev" id="hero-prev" aria-label="Previous embodiment">←</button><button class="carousel-arrow next" id="hero-next" aria-label="Next embodiment">→</button></div><div class="carousel-caption" aria-live="polite"><h2 id="hero-label"></h2><p id="hero-description"></p></div></section>
+<section class="paper section reveal" id="paper" aria-label="Paper and authors">
+  <dl class="paper-info">
+    <div>
+      <dt>Authors</dt>
+      <dd>
+        <ul class="authors-list" role="list">
+          <li>Zhaolu Wang<sup>1,*</sup></li>
+          <li>Jiacheng Xu<sup>2,*</sup></li>
+          <li>Lihong Wang<sup>1,*</sup></li>
+          <li>Shuqing Wang<sup>3,*</sup></li>
+          <li>Jianjie Fang<sup>2,‡</sup></li>
+          <li>Ziyou Wang<sup>2</sup></li>
+          <li>Xvyuan Liu<sup>2</sup></li>
+          <li>Rongze Tang<sup>1</sup></li>
+          <li>Yiding Ma<sup>2</sup></li>
+          <li>Xin Zhang<sup>4</sup></li>
+          <li>Jiawei Chen<sup>5</sup></li>
+          <li>Wei Wu<sup>4</sup></li>
+          <li>Chen Gao<sup>2,†</sup></li>
+          <li>Yong Li<sup>2,†</sup></li>
+          <li>Zhibo Chen<sup>6</sup></li>
+        </ul>
+        <p class="author-notes"><span>* Equal contribution</span><span>† Corresponding authors</span><span>‡ Project Leader</span></p>
+      </dd>
+    </div>
+    <div>
+      <dt>Affiliations</dt>
+      <dd>
+        <ul class="affiliation-list" role="list">
+          <li><sup>1</sup> Zhongguancun Academy</li>
+          <li><sup>2</sup> Tsinghua University</li>
+          <li><sup>3</sup> Tianjin University</li>
+          <li><sup>4</sup> Manifold AI</li>
+          <li><sup>5</sup> Zhejiang University</li>
+          <li><sup>6</sup> University of Science and Technology of China</li>
+        </ul>
+      </dd>
+    </div>
+    <div>
+      <dt>Corresponding authors</dt>
+      <dd>
+        <ul class="contact-list" role="list">
+          <li><a href="mailto:chgao96@gmail.com" aria-label="Email Chen Gao at chgao96@gmail.com">chgao96@gmail.com</a></li>
+          <li><a href="mailto:liyong07@tsinghua.edu.cn" aria-label="Email Yong Li at liyong07@tsinghua.edu.cn">liyong07@tsinghua.edu.cn</a></li>
+        </ul>
+      </dd>
+    </div>
+    <div>
+      <dt>Project Leader</dt>
+      <dd>
+        <ul class="contact-list" role="list">
+          <li><a href="mailto:fjj25@mails.tsinghua.edu.cn" aria-label="Email Jianjie Fang at fjj25@mails.tsinghua.edu.cn">fjj25@mails.tsinghua.edu.cn</a></li>
+        </ul>
+      </dd>
+    </div>
+    <div>
+      <dt>Code</dt>
+      <dd><a href="https://github.com/EmbodiedCity/HandWorldBench.code" target="_blank" rel="noopener noreferrer">HandWorldBench.code ↗</a><span class="resource-detail">Evaluation framework and data processing pipeline</span></dd>
+    </div>
+    <div>
+      <dt>Datasets</dt>
+      <dd>
+        <ul class="release-datasets" role="list">
+          <li><a href="https://huggingface.co/datasets/EmbodiedCity/HandWorldBench" target="_blank" rel="noopener noreferrer">HandWorldBench ↗</a><span class="resource-detail">500 evaluation cases with inference inputs and scoring annotations</span></li>
+          <li><a href="https://huggingface.co/datasets/EmbodiedCity/HandWorldBench-Corpus" target="_blank" rel="noopener noreferrer">HandWorldBench-Corpus ↗</a><span class="resource-detail">About 20,000 curated clips with unified control annotations</span></li>
+        </ul>
+      </dd>
+    </div>
+    <div>
+      <dt>Leaderboard</dt>
+      <dd><a href="#results">View results ↗</a></dd>
+    </div>
+  </dl>
+<figure class="project-video" id="project-video">
+  <video controls playsinline preload="none" width="1280" height="720"
+    poster="assets/overview/handworldbench-en.webp?v=2" aria-label="HandWorldBench project video in English">
+    <source src="assets/overview/handworldbench-en.mp4?v=2" type="video/mp4">
+    <a href="assets/overview/handworldbench-en.mp4?v=2">Play the HandWorldBench project video</a>
+  </video>
+</figure>
+<div class="abstract"><h3>Abstract</h3><p>HandWorldBench evaluates hand-centric world models across human hands, simulated dexterous hands, and real dexterous hands. From over 600 hours of footage, we curate 20,500 clips and select 500 evaluation references spanning seven task families and 22 task categories. Seventeen metrics assess six dimensions, from visual quality and hand fidelity to physical consistency and temporal coherence.</p><p>Evaluating eleven models reveals a gap between controlling hand motion and predicting coherent, persistent changes in the world.</p></div><figure class="paper-figure" data-figure="teaser" data-title="HandWorldBench overview"></figure></section>
+<section class="benchmark section reveal" id="benchmark"><div class="section-heading"><h2>Three embodiments.<br>One benchmark.</h2><p>Human hands, simulated dexterous hands, and real dexterous hands share a common language of interaction.</p></div><div class="stats"><div><strong>20,500</strong><span>Curated clips</span></div><div><strong>500</strong><span>Evaluation cases</span></div><div><strong>7</strong><span>Task families</span></div><div><strong>22</strong><span>Task categories</span></div></div><figure class="paper-figure" data-figure="data_pipeline" data-title="Data curation, control alignment and task annotation"></figure></section>
+<section class="cases-section" id="explore"><div class="section-heading section"><h2>Explore the interactions.</h2><p>From folding and assembling to grasping, pouring, and stirring.</p></div><div id="case-rows"></div></section>
+<div id="training-corpus" aria-hidden="true"></div>
+<section class="section corpus-section" id="interaction-data">
+  <div class="section-heading">
+    <h2>High-quality interaction data</h2>
+    <p>20,000 curated clips across human, simulated, and real dexterous hands.</p>
+  </div>
+  <div class="corpus-overview" id="corpus-overview"></div>
+  <div class="corpus-toolbar">
+    <label for="corpus-domain">Embodiment</label>
+    <select id="corpus-domain">
+      <option value="all">All embodiments</option>
+      <option value="ego">Egocentric human hands</option>
+      <option value="handson">Simulated dexterous hands</option>
+      <option value="ti5">Real dexterous hands</option>
+    </select>
+  </div>
+  <div class="corpus-charts" id="corpus-charts" aria-live="polite">
+    <article>
+      <div class="chart-heading"><h3>Operation diversity</h3><select id="corpus-taxonomy" aria-label="Operation grouping"><option value="families">Task families</option><option value="operations">Task categories</option></select></div>
+      <div id="corpus-operations"></div>
+    </article>
+    <article>
+      <div class="chart-heading"><h3>Clip lengths</h3><select id="corpus-length" aria-label="Length unit"><option value="frameBins">Frames</option><option value="durationBins">Seconds</option></select></div>
+      <div id="corpus-lengths"></div>
+      <div id="corpus-length-summary"></div>
+    </article>
+  </div>
+</section>
+<section class="section research-demo" id="unified-control">
+  <div class="section-heading">
+    <h2>Unified Control</h2>
+    <p>Explore three ways to represent the same hand motion, alongside the reference, model output, and scene conditions.</p>
+  </div>
+  <div class="control-case-tabs" id="control-case-tabs" role="tablist" aria-label="Unified control examples"></div>
+  <div class="control-gallery" id="control-gallery" role="tabpanel"></div>
+</section>
+<section class="section evaluation reveal" id="evaluation"><div class="section-heading"><h2>Six dimensions.<br>A fuller picture.</h2><p>Evaluate what a world model sees, how it moves, and how the world changes over time.</p></div><div class="metric-grid" id="metric-grid"></div><div class="figure-switcher" data-figure-group="evaluation"></div></section>
+<section class="section results reveal" id="results"><div class="section-heading"><h2>Benchmark results.</h2><p>Eleven models. Three embodiments. A shared evaluation protocol.</p></div><figure class="paper-figure" data-figure="results_overview" data-title="Overall rankings and cross-embodiment results"></figure><div class="results-toolbar"><div id="result-filters" class="tabs"><button class="active" data-subset="all">Overall</button><button data-subset="human">Ego</button><button data-subset="handson">Simulated hands</button><button data-subset="real_robot">Real robot</button></div></div><div class="table-scroll"><table id="results-table"><thead><tr><th>Rank</th><th>Model</th><th><button data-sort="score">HWBScore ↓</button></th><th><button data-sort="0">Visual<br>quality</button></th><th><button data-sort="1">Hand<br>fidelity</button></th><th><button data-sort="2">Appearance<br>consistency</button></th><th><button data-sort="3">Instruction<br>following</button></th><th><button data-sort="4">Physical<br>consistency</button></th><th><button data-sort="5">Temporal<br>coherence</button></th></tr></thead><tbody></tbody></table></div></section>
+<section class="section findings reveal"><div class="section-heading"><h2>Beyond hand motion.</h2><p>Object-state evolution, persistence, and memory reveal complementary strengths across world models.</p></div><figure class="paper-figure" data-figure="qualitative_cases" data-title="Qualitative comparisons across world models"></figure><div class="findings-pair"><figure class="paper-figure" data-figure="interaction_diagnostics" data-title="Relationships between motion and state prediction"></figure><figure class="paper-figure" data-figure="human_alignment" data-title="Agreement with human evaluation"></figure></div><div class="figure-switcher" data-figure-group="analysis"></div></section>
+
+</main><footer><a class="brand" href="#">HandWorldBench</a><a href="#paper">Paper & authors</a><a href="#interaction-data">Interaction data</a><a href="#">Back to top ↑</a></footer>
+<dialog id="case-dialog" aria-labelledby="dialog-title"><button class="dialog-close" aria-label="Close case details">×</button><video id="detail-video" controls playsinline preload="none"></video><div class="dialog-copy"><h2 id="dialog-title"></h2><p id="dialog-caption"></p><div class="dialog-nav"><button id="prev-case">← Previous</button><span id="dialog-domain"></span><button id="next-case">Next →</button></div></div></dialog>
+<dialog id="figure-dialog" aria-labelledby="figure-title"><button class="figure-close dialog-close" aria-label="Close figure">×</button><h2 id="figure-title"></h2><img id="figure-full" alt=""></dialog>
+</body></html>
