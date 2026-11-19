@@ -1,0 +1,184 @@
+[
+  {
+    "name": "Wipe a toy car",
+    "domain": "Human hands",
+    "model": "EgoHOI",
+    "folder": "",
+    "predictionWidth": 360,
+    "prompt": "The wearer is seated at a wooden desk in a home office, with a large black monitor centered behind a white keyboard and mouse. The desk holds two Rubik's cubes, a screwdriver, an open cardboard box, a small tripod, and various cables and remotes. In the hands is a small blue and white object resembling a toy car, held above the keyboard area.\n\nHolding the object in the left hand, the wearer uses a white cloth or wipe in the right hand to rub its surfaces, rotating the item periodically to reach different sides. The wiping motion continues across multiple faces of the object throughout the segment, with the right hand adjusting grip on the cloth as needed while the left hand repositions the piece. No other objects are manipulated during this interval.",
+    "excerpt": "Hold the toy car in one hand and wipe its surfaces with the other.",
+    "hands": [
+      {
+        "clip": "human/skeleton-detail",
+        "label": "Colored hand skeleton",
+        "detail": "Color-coded finger bones"
+      },
+      {
+        "clip": "human/landmarks",
+        "label": "21-point landmarks",
+        "detail": "Camera-projected joints"
+      },
+      {
+        "clip": "mesh",
+        "label": "Hand surface mesh",
+        "detail": "Rendered hand surfaces"
+      }
+    ],
+    "context": [
+      {
+        "clip": "human/camera-comparison",
+        "label": "Camera pose & motion",
+        "detail": "Tracked egocentric camera",
+        "links": [
+          {
+            "clip": "human/camera-comparison.mp4",
+            "label": "Open camera view ↗"
+          }
+        ]
+      },
+      {
+        "clip": "human/scene-point-cloud",
+        "label": "Scene point cloud",
+        "detail": "Estimated from depth · rotating view",
+        "links": [
+          {
+            "clip": "human/scene-depth.webp",
+            "label": "Depth map ↗"
+          },
+          {
+            "clip": "human/scene-detail.mp4",
+            "label": "Scene RGB ↗"
+          },
+          {
+            "clip": "human/scene-coverage.mp4",
+            "label": "Full coverage ↗"
+          }
+        ]
+      }
+    ],
+    "objectMask": {
+      "image": "initial-object.webp",
+      "label": "Initial object mask",
+      "detail": "Binary mask and masked RGB"
+    },
+    "sceneMode": "Tracked camera · reprojected scene"
+  },
+  {
+    "name": "Open a laptop",
+    "domain": "Simulated dexterous hands",
+    "model": "EgoSim",
+    "folder": "simulated/",
+    "predictionWidth": 624,
+    "prompt": "In a tidy indoor workspace, a robot with white arms and black multi-finger dexterous hands opens a closed silver laptop on a wooden table. The right hand approaches the front-right corner of the lid and lifts it to a steep angle, while the left hand remains stationary on the left side.",
+    "excerpt": "Lift the laptop lid with the right hand while the left hand stays beside it.",
+    "hands": [
+      {
+        "clip": "skeleton-detail",
+        "label": "Colored hand skeleton",
+        "detail": "Color-coded finger bones"
+      },
+      {
+        "clip": "landmarks",
+        "label": "21-point landmarks",
+        "detail": "Camera-projected joints"
+      },
+      {
+        "clip": "mesh",
+        "label": "Hand surface mesh",
+        "detail": "Rendered hand surfaces"
+      }
+    ],
+    "context": [
+      {
+        "clip": "camera-comparison",
+        "label": "Camera pose & motion",
+        "detail": "Fixed simulator pose",
+        "links": [
+          {
+            "clip": "camera-comparison.mp4",
+            "label": "Open camera view ↗"
+          }
+        ]
+      },
+      {
+        "clip": "scene-point-cloud",
+        "label": "Scene point cloud",
+        "detail": "Estimated from reference depth · rotating view",
+        "links": [
+          {
+            "clip": "scene-depth.webp",
+            "label": "Depth map ↗"
+          },
+          {
+            "clip": "scene.mp4",
+            "label": "Scene RGB ↗"
+          },
+          {
+            "clip": "scene-coverage.mp4",
+            "label": "Full coverage ↗"
+          }
+        ]
+      }
+    ],
+    "sceneMode": "Fixed camera · static scene prior"
+  },
+  {
+    "name": "Transfer a tissue",
+    "domain": "Real dexterous hands",
+    "model": "EgoSim",
+    "folder": "robot/",
+    "predictionWidth": 624,
+    "prompt": "A two-armed robot with black-gloved, multi-fingered dexterous hands operates on a white tabletop. A wooden cutting board with a blue bowl sits in the center, and a white tissue box with blue patterns is to the right. The right hand approaches the tissue box, grasps a protruding white tissue, and pulls it out. The hand then transports the tissue to the blue bowl, placing it across the rim. Both hands retract, leaving the tissue resting on the bowl.",
+    "excerpt": "Pull a tissue from the box and place it in the blue bowl.",
+    "hands": [
+      {
+        "clip": "skeleton",
+        "label": "Colored hand skeleton",
+        "detail": "Color-coded finger bones"
+      },
+      {
+        "clip": "landmarks",
+        "label": "21-point landmarks",
+        "detail": "Camera-projected joints"
+      },
+      {
+        "clip": "mesh",
+        "label": "Hand surface mesh",
+        "detail": "Rendered hand surfaces"
+      }
+    ],
+    "context": [
+      {
+        "clip": "camera-comparison",
+        "label": "Camera pose & motion",
+        "detail": "Fixed pose in the camera condition",
+        "links": [
+          {
+            "clip": "camera-comparison.mp4",
+            "label": "Open camera view ↗"
+          }
+        ]
+      },
+      {
+        "clip": "scene-point-cloud",
+        "label": "Scene point cloud",
+        "detail": "Estimated from reference depth · rotating view",
+        "links": [
+          {
+            "clip": "scene-depth.webp",
+            "label": "Depth map ↗"
+          },
+          {
+            "clip": "scene.mp4",
+            "label": "Scene RGB ↗"
+          },
+          {
+            "clip": "scene-coverage.mp4",
+            "label": "Full coverage ↗"
+          }
+        ]
+      }
+    ],
+    "sceneMode": "Fixed camera condition · static scene prior"
+  }
+]
