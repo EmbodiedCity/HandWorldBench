@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leaderboard · HandWorldBench</title>
+  <meta name="description" content="Compare HandWorldBench model scores across 17 metrics and three embodiments, and submit an open-source model for evaluation.">
+  <link rel="icon" href="assets/mark.svg">
+  <link rel="stylesheet" href="style.css?v=leaderboard1">
+  <link rel="stylesheet" href="leaderboard.css?v=board2">
+  <script defer src="metric-groups.js"></script>
+  <script defer src="leaderboard.js?v=board2"></script>
+</head>
+<body class="board-page">
+  <header>
+    <div class="header-brand">
+      <a class="brand" href="index.html">HandWorldBench</a>
+      <div class="header-affiliations" role="group" aria-label="Partner institutions">
+        <img src="assets/branding/tsinghua.webp" width="127" height="128" alt="Tsinghua University">
+        <img src="assets/branding/zhongguancun.webp" width="128" height="128" alt="Zhongguancun Academy">
+        <img src="assets/branding/manifold-ai.webp" width="147" height="128" alt="Manifold AI">
+      </div>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="index.html#paper">Paper</a><a href="index.html#benchmark">Benchmark</a><a href="index.html#unified-control">Unified Control</a><a href="index.html#evaluation">Evaluation</a><a href="index.html#results">Results</a><a class="leaderboard-link" href="leaderboard.html" aria-current="page">Leaderboard</a>
+    </nav>
+  </header>
+
+  <main class="board-shell">
+    <section class="masthead" aria-labelledby="rankings-title">
+      <div class="masthead-title">
+        <img class="board-wordmark" src="assets/branding/handworldbench.webp" width="1600" height="265" alt="HandWorldBench">
+        <h1 id="rankings-title">Leaderboard</h1>
+        <p class="board-intro">Eleven hand-centric world models, scored on 500 reference cases from egocentric human hands, simulated dexterous hands, and real robots. Pick an embodiment to see how the ranking shifts.</p>
+        <p class="masthead-actions"><a class="action-primary" href="#submission">Submit a model</a><a href="https://arxiv.org/abs/2611.24731">Read the paper</a></p>
+      </div>
+
+      <aside class="updates" aria-labelledby="news-title">
+        <h2 id="news-title">Updates</h2>
+        <div class="news-window">
+          <div class="news-feed" tabindex="0" role="region" aria-label="Benchmark updates">
+            <ol class="news-list">
+              <li>
+                <time datetime="2026-11-18" title="First paper release">Nov 18, 2026</time>
+                <div class="news-entry">
+                  <h3><a href="#rankings">First evaluation round</a></h3>
+                  <p>Our paper reports results for 11 world models on 500 reference cases.</p>
+                  <details class="news-copy">
+                    <summary>What this round covers</summary>
+                    <dl>
+                      <div><dt>Evaluation set</dt><dd>322 egocentric human-hand cases, 108 simulated-hand cases, and 70 real-robot cases.</dd></div>
+                      <div><dt>Image-to-video baselines</dt><dd>CogVideoX1.5, HunyuanVideo 1.5, Wan2.1, and Wan2.2.</dd></div>
+                      <div><dt>Hand-guided baselines</dt><dd>DWM, EgoHOI, EgoSim, Hand2World, JointControlVideo, PAM, and RynnWorld-Teleop.</dd></div>
+                      <div><dt>Score breakdown</dt><dd>17 metrics across six dimensions, reported overall and per embodiment.</dd></div>
+                    </dl>
+                  </details>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="rankings" class="rankings" aria-label="Model rankings">
+      <div class="board-scopes" role="group" aria-label="Evaluation subset">
+        <button type="button" data-scope="all" aria-pressed="true" style="--share:1"><span class="scope-name">Overall</span><span class="scope-count">500 cases</span><span class="scope-share" aria-hidden="true"></span></button>
+        <button type="button" data-scope="human" aria-pressed="false" style="--share:.644"><span class="scope-name">Human hands</span><span class="scope-count">322 cases</span><span class="scope-share" aria-hidden="true"></span></button>
+        <button type="button" data-scope="handson" aria-pressed="false" style="--share:.216"><span class="scope-name">Simulated hands</span><span class="scope-count">108 cases</span><span class="scope-share" aria-hidden="true"></span></button>
+        <button type="button" data-scope="real_robot" aria-pressed="false" style="--share:.14"><span class="scope-name">Real robot</span><span class="scope-count">70 cases</span><span class="scope-share" aria-hidden="true"></span></button>
+      </div>
+
+      <div class="score-tools">
+        <div class="view-switch" role="group" aria-label="Score detail">
+          <button type="button" data-view="summary" aria-pressed="true">Six dimensions</button>
+          <button type="button" data-view="metrics" aria-pressed="false">All 17 metrics</button>
+        </div>
+        <div class="group-chips" id="group-field" role="group" aria-label="Metric dimension" hidden></div>
+        <div class="board-legend" aria-hidden="true">
+          <span class="legend-type" data-type="Hand-guided">Hand-guided</span>
+          <span class="legend-type" data-type="General I2V">General I2V</span>
+          <span class="legend-heat"><span>Lowest in column</span><i></i><span>Best in column</span></span>
+        </div>
+      </div>
+
+      <p id="board-status" role="status">Loading scores…</p>
+      <div class="board-table-wrap" role="region" aria-label="Scrollable model scores" tabindex="0">
+        <table id="board-table"><caption class="sr-board" id="board-caption">Model scores</caption><thead></thead><tbody></tbody></table>
+      </div>
+      <div class="score-notes">
+        <p id="scope-count" aria-live="polite"></p>
+        <p id="scale-note"></p>
+        <p><strong>General I2V</strong> models use text and an RGB anchor image. <strong>Hand-guided</strong> models also use hand motion controls. Select a model name to compare its ranks across embodiments.</p>
+      </div>
+    </section>
+
+    <section id="submission" class="submission" aria-labelledby="submission-title">
+      <div class="section-aside">
+        <h2 id="submission-title">Submit a model</h2>
+        <p>We rerun every submission on all 500 cases across the three embodiments, then add it to the board.</p>
+        <ol class="submit-steps">
+          <li><strong>Describe your model</strong><span>Fill in the form. Release links help us reproduce it faster.</span></li>
+          <li><strong>Send the email draft</strong><span>The form writes an email to <a href="mailto:learnerwang04@gmail.com">learnerwang04@gmail.com</a> for you to review.</span></li>
+          <li><strong>Official rerun</strong><span>We run the open release with the benchmark protocol and share the scores with you.</span></li>
+          <li><strong>Listed on the board</strong><span>Verified scores appear here with the next update.</span></li>
+        </ol>
+        <article class="protocol-card" id="guidelines" aria-labelledby="notes-title">
+          <h3 id="notes-title">Evaluation integrity and reproducibility</h3>
+          <p>Entries need an open-source release and an official rerun. See the requirements for model access, input disclosure, and score verification.</p>
+          <a href="evaluation-notes.html">Read the evaluation protocol</a>
+        </article>
+      </div>
+      <form class="request-form" id="request-form" method="dialog">
+        <h3>Request an evaluation</h3>
+        <p class="form-hint">Fields marked * are required. You can review the email before sending it.</p>
+        <div class="form-grid">
+          <label>Team name *<input name="team" required></label>
+          <label>Organization *<input name="organization" autocomplete="organization" placeholder="Institution or Independent" required></label>
+          <label>Contact name *<input name="contact" autocomplete="name" required></label>
+          <label>Contact email *<input name="email" type="email" autocomplete="email" required></label>
+          <label>Model name and version *<input name="model" required></label>
+          <label>Model interface *<select name="kind" required><option value="">Select interface</option><option>Image and text</option><option>Hand-conditioned generation</option><option>Other</option></select></label>
+          <label>Additional contact (optional)<input name="alternate" placeholder="Other channel or phone number"></label>
+          <label>WeChat ID (optional)<input name="wechat"></label>
+        </div>
+        <fieldset><legend>Reproduction materials (optional)</legend>
+          <div class="form-grid">
+            <label>Public code repository<input name="repo" type="url" placeholder="https://"></label>
+            <label>Commit or release tag<input name="revision"></label>
+            <label>Model weights URL<input name="weights" type="url" placeholder="https://"></label>
+            <label>Checkpoint version<input name="checkpoint"></label>
+            <label class="full-field">Inputs and evaluation setup<textarea name="setup" rows="3" placeholder="List conditioning signals and their sources, including any reference-derived preprocessing."></textarea></label>
+            <label class="full-field">Reproduction instructions<textarea name="run" rows="3" placeholder="Provide commands or a link to a runbook with dependencies, hardware, configuration, and seeds."></textarea></label>
+          </div>
+        </fieldset>
+        <button class="request-primary" type="submit">Prepare email draft</button>
+        <div id="email-draft" hidden>
+          <h4>Email draft</h4>
+          <p id="draft-to"></p><p id="draft-subject"></p>
+          <textarea id="draft-body" aria-label="Email draft body" rows="8" readonly></textarea>
+          <div class="draft-actions"><a class="request-primary" id="open-email">Open in email app</a><button type="button" id="copy-email">Copy email</button></div>
+          <span id="copy-status" role="status"></span>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

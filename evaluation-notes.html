@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evaluation notes · HandWorldBench</title>
+  <meta name="description" content="Submission requirements and official reproduction on HandWorldBench.">
+  <link rel="icon" href="assets/mark.svg">
+  <link rel="stylesheet" href="style.css?v=leaderboard1">
+  <link rel="stylesheet" href="leaderboard.css">
+</head>
+<body class="board-page">
+  <header>
+    <div class="header-brand">
+      <a class="brand" href="index.html">HandWorldBench</a>
+      <div class="header-affiliations" role="group" aria-label="Partner institutions">
+        <img src="assets/branding/tsinghua.webp" width="127" height="128" alt="Tsinghua University">
+        <img src="assets/branding/zhongguancun.webp" width="128" height="128" alt="Zhongguancun Academy">
+        <img src="assets/branding/manifold-ai.webp" width="147" height="128" alt="Manifold AI">
+      </div>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="index.html#paper">Paper</a><a href="index.html#benchmark">Benchmark</a><a href="index.html#unified-control">Unified Control</a><a href="index.html#evaluation">Evaluation</a><a href="index.html#results">Results</a><a class="leaderboard-link" href="leaderboard.html">Leaderboard</a>
+    </nav>
+  </header>
+  <main class="board-shell protocol-page">
+    <a class="return-board" href="leaderboard.html#guidelines">Back to leaderboard</a>
+    <h1>Evaluation integrity and reproducibility</h1>
+    <p class="protocol-intro">How to prepare an open release and how the HandWorldBench team verifies a leaderboard entry.</p>
+    <div class="protocol-layout">
+      <nav aria-label="On this page"><strong>On this page</strong>
+        <a href="#release">Open release</a><a href="#inputs">Inputs and disclosures</a>
+        <a href="#reproduce">Official reproduction</a><a href="#scores">Reporting scores</a>
+      </nav>
+      <div class="protocol-body">
+        <section id="release"><h2>Open release</h2><p>Each entry must identify a publicly accessible source repository and an open-source code license. Pin the commit or release and the checkpoint used for evaluation. Link the weights and their license so that the benchmark team and independent researchers can obtain and run the same model.</p>
+        <p>Include any inference adapters, preprocessing scripts, and configuration needed to generate the evaluated videos. Document the environment, hardware, commands, and seed settings. Identify any external models or dependencies and their versions.</p></section>
+        <section id="inputs"><h2>Inputs and disclosures</h2><p>Describe the inputs the generator receives for each of the three embodiments. Distinguish task text and the first RGB frame from hand controls, camera parameters, scene priors, and generated history.</p>
+        <p>For each derived input, explain how it was constructed and which frames it uses. In particular, disclose access to later reference frames, including indirect access through estimated depth, masks, or scene renderings. Identify any known overlap between model development data and benchmark evaluation cases.</p></section>
+        <section id="reproduce"><h2>Official reproduction</h2><p>The HandWorldBench team will run the submitted release with the declared settings and score the resulting videos using the benchmark evaluation code. Provide settings that can be applied consistently across the evaluation set, including sampling, clip length, windowing, and any output selection.</p>
+        <p>If an artifact is missing or the instructions do not reproduce the run, the team will ask the named contact for clarification before listing a score. A change to weights, code, or settings should be identified by a new version so the team can reproduce the revised run.</p></section>
+        <section id="scores"><h2>Reporting scores</h2><p>Official entries use the team’s reproduced results. Each submission runs on the full set of 500 cases. The leaderboard reports an overall score and a separate breakdown for each embodiment.</p>
+        <p>The summary displays HWBScore and six dimension scores on a 0–100 scale. Individual metrics use the paper’s 0–1 scale. A dash indicates structural inapplicability, such as hand morphology for real dexterous hands. These cells are excluded from the applicable metric average.</p>
+        <div class="board-resources"><a href="https://arxiv.org/abs/2611.24731">Benchmark paper</a><a href="https://github.com/EmbodiedCity/HandWorldBench.code">Evaluation code</a><a href="leaderboard.html#submission">Prepare a submission</a></div></section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

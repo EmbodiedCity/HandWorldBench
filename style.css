@@ -258,3 +258,19 @@ header nav { white-space: nowrap; }
   html { scroll-padding-top: 100px; }
   header { height: auto; min-height: 67px; flex-wrap: wrap; gap: 5px; padding-block: 8px; }
 }
+
+header nav { align-items: center; }
+header nav .leaderboard-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 4px 15px;
+  border-radius: 100px;
+  background: #23272f;
+  color: white;
+  font-weight: 600;
+}
+header nav .leaderboard-link:hover { background: #354e73; color: white; }
+@media (max-width: 730px) {
+  header:has(.leaderboard-link) { height: auto; min-height: 67px; flex-wrap: wrap; padding-block: 8px; }
+}
