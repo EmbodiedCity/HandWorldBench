@@ -1,25 +1,40 @@
 'use strict';
 
 const scopes = {
-  all: ['Overall', 500],
+  all: ['All embodiments', 500],
   human: ['Human hands', 322],
   handson: ['Simulated hands', 108],
   real_robot: ['Real robot', 70],
 };
 // Evaluated conditioning interfaces in Appendix G.
 const modelTypes = {
-  'CogVideoX1.5': 'General I2V',
-  'HunyuanVideo 1.5': 'General I2V',
-  'Wan2.1': 'General I2V',
-  'Wan2.2': 'General I2V',
-  'DWM': 'Hand-guided',
-  'EgoHOI': 'Hand-guided',
-  'EgoSim': 'Hand-guided',
-  'Hand2World': 'Hand-guided',
-  'JointControlVideo': 'Hand-guided',
-  'PAM': 'Hand-guided',
-  'RynnWorld-Teleop': 'Hand-guided',
+  'CogVideoX1.5': 'TI2V',
+  'HunyuanVideo 1.5': 'TI2V',
+  'Wan2.1': 'TI2V',
+  'Wan2.2': 'TI2V',
+  // Added Nov 27, 2026: VPP2 Stage-1 video checkpoint (vpp2-video-stage1-49f).
+  'VPP2 Stage-1': 'TI2V',
+  'DWM': 'Hand-conditioned',
+  'EgoHOI': 'Hand-conditioned',
+  'EgoSim': 'Hand-conditioned',
+  'Hand2World': 'Hand-conditioned',
+  'JointControlVideo': 'Hand-conditioned',
+  'PAM': 'Hand-conditioned',
+  'RynnWorld-Teleop': 'Hand-conditioned',
 };
+// Model tracks are filtered views of the same board; 'all' is the default.
+const tracks = {
+  all: { label: 'All models', type: null },
+  ti2v: { label: 'TI2V', type: 'TI2V' },
+  'hand-conditioned': { label: 'Hand-conditioned', type: 'Hand-conditioned' },
+};
+const trackNotes = {
+  all: count => count + ' models in one ranking: TI2V models and hand-conditioned models side by side. Pick a track to rank each group on its own.',
+  ti2v: count => 'Input: task text and the first RGB frame. ' + count + ' models. Hand metrics such as Pose Control show how closely the generated hands follow the reference motion without receiving it.',
+  'hand-conditioned': count => 'Input: task text, the first RGB frame, and hand motion. ' + count + ' models.',
+};
+// Short scope names used in shareable links such as leaderboard.html#ti2v/real-robot.
+const scopeSlugs = { all: 'all', human: 'human', handson: 'simulated', real_robot: 'real-robot' };
 const table = document.querySelector('#board-table');
 const tableWrap = document.querySelector('.board-table-wrap');
 const groupField = document.querySelector('#group-field');
@@ -28,6 +43,7 @@ const statusMessage = document.querySelector('#board-status');
 const metricNames = metricGroups.flatMap(group => group.metrics);
 const scoreColumn = { id: 'score', label: 'HWBScore', value: row => row.score, digits: 2 };
 let scores;
+let track = 'all';
 let scope = 'all';
 let view = 'summary';
 let group = 'all';
@@ -60,8 +76,13 @@ function columnsForView() {
   }))];
 }
 
-function rankMap(key) {
-  return new Map(scores[key].map((row, i) => [row.name, i + 1]));
+function entriesFor(key, trackKey = track) {
+  const type = tracks[trackKey].type;
+  return type ? scores[key].filter(row => modelTypes[row.name] === type) : scores[key];
+}
+
+function rankMap(key, trackKey = track) {
+  return new Map(entriesFor(key, trackKey).map((row, i) => [row.name, i + 1]));
 }
 
 function sortButton(col) {
@@ -131,15 +152,16 @@ function detailPanel(model, columnCount) {
   const panel = el('div', 'detail-panel');
 
   const ranks = el('div', 'detail-ranks');
-  ranks.append(el('h3', null, 'Rank by embodiment'));
+  ranks.append(el('h3', null, track === 'all' ? 'Rank by embodiment' : 'Rank by embodiment, ' + tracks[track].label + ' models'));
   const list = el('ol');
   for (const [key, [name]] of Object.entries(scopes)) {
-    const entry = scores[key].find(r => r.name === model.name);
+    const pool = entriesFor(key);
+    const entry = pool.find(r => r.name === model.name);
     const item = el('li');
     if (key === scope) item.setAttribute('aria-current', 'true');
-    const position = scores[key].indexOf(entry) + 1;
+    const position = pool.indexOf(entry) + 1;
     item.append(el('span', 'detail-scope', name), el('strong', null, '#' + position), el('span', 'detail-score', entry.score.toFixed(2)));
-    item.setAttribute('aria-label', name + ': rank ' + position + ' of ' + scores[key].length + ', HWBScore ' + entry.score.toFixed(2));
+    item.setAttribute('aria-label', name + ': rank ' + position + ' of ' + pool.length + ', HWBScore ' + entry.score.toFixed(2));
     list.append(item);
   }
   ranks.append(list);
@@ -148,9 +170,10 @@ function detailPanel(model, columnCount) {
   dims.append(el('h3', null, 'Dimension scores, ' + scopes[scope][0].toLowerCase()));
   const bars = el('ul');
   metricGroups.forEach((g, index) => {
-    const values = scores[scope].map(r => r.dimensions[index]);
+    const pool = entriesFor(scope);
+    const values = pool.map(r => r.dimensions[index]);
     const best = Math.max(...values);
-    const leader = scores[scope].find(r => r.dimensions[index] === best).name;
+    const leader = pool.find(r => r.dimensions[index] === best).name;
     const value = model.dimensions[index];
     const item = el('li');
     const bar = el('span', 'dim-bar');
@@ -165,7 +188,7 @@ function detailPanel(model, columnCount) {
     item.setAttribute('aria-label', g.name + ' ' + value.toFixed(1) + (value === best ? ', best in this view' : ', best is ' + leader + ' at ' + best.toFixed(1)));
     bars.append(item);
   });
-  dims.append(bars, el('p', 'dim-key', 'The mark on each track shows the best score among all models in this view.'));
+  dims.append(bars, el('p', 'dim-key', 'The mark on each track shows the best score among ' + (track === 'all' ? 'all models' : tracks[track].label + ' models') + ' in this view.'));
 
   panel.append(ranks, dims);
   cell.append(panel);
@@ -177,9 +200,10 @@ function renderTable({ grow = false } = {}) {
   const columns = columnsForView();
   if (!columns.some(col => col.id === sortKey)) { sortKey = 'score'; descending = true; }
   const [scopeName, count] = scopes[scope];
-  const entries = scores[scope];
+  const entries = entriesFor(scope);
   const ranks = rankMap(scope);
   const overallRanks = rankMap('all');
+  const trackRanks = Object.fromEntries(Object.keys(tracks).filter(key => tracks[key].type).map(key => [tracks[key].type, rankMap(scope, key)]));
   const column = columns.find(col => col.id === sortKey);
   const sorted = [...entries].sort((left, right) => {
     const a = column.value(left), b = column.value(right);
@@ -212,7 +236,7 @@ function renderTable({ grow = false } = {}) {
       const delta = el('span', 'rank-shift');
       delta.dataset.dir = shift > 0 ? 'up' : shift < 0 ? 'down' : 'same';
       delta.textContent = shift > 0 ? '▲' + shift : shift < 0 ? '▼' + -shift : '';
-      delta.title = shift === 0 ? 'Same rank as overall' : (shift > 0 ? 'Up ' : 'Down ') + Math.abs(shift) + ' from overall rank ' + overallRanks.get(model.name);
+      delta.title = shift === 0 ? 'Same rank as on all embodiments' : (shift > 0 ? 'Up ' : 'Down ') + Math.abs(shift) + ' from rank ' + overallRanks.get(model.name) + ' on all embodiments';
       delta.setAttribute('aria-label', delta.title);
       rankCell.append(delta);
     }
@@ -224,9 +248,21 @@ function renderTable({ grow = false } = {}) {
     toggle.dataset.model = model.name;
     toggle.setAttribute('aria-expanded', openModel === model.name);
     toggle.setAttribute('aria-controls', 'detail-' + slug(model.name));
-    const typeTag = el('span', 'model-type', type);
-    typeTag.dataset.type = type;
-    toggle.append(el('span', 'model-name', model.name), typeTag);
+    toggle.append(el('span', 'model-name', model.name));
+    if (track === 'all') {
+      const typeTag = el('span', 'model-type');
+      // On the combined board, also show the rank inside the model's own track.
+      const inTrack = trackRanks[type]?.get(model.name);
+      typeTag.dataset.type = type;
+      typeTag.append(type);
+      if (inTrack) {
+        const tag = el('span', 'track-rank', '#' + inTrack);
+        tag.title = 'Rank ' + inTrack + ' among ' + type + ' models';
+        tag.setAttribute('aria-label', tag.title);
+        typeTag.append(' ', tag);
+      }
+      toggle.append(typeTag);
+    }
     nameCell.append(toggle);
 
     for (const col of columns) {
@@ -269,8 +305,11 @@ function renderTable({ grow = false } = {}) {
   table.classList.toggle('detail', detail);
   table.classList.toggle('grouped', detail && group === 'all');
   table.classList.toggle('grow', grow);
-  document.querySelector('#board-caption').textContent = scopeName + ', ' + (detail ? (group === 'all' ? 'all 17 metrics' : metricGroups[group].name) : 'six dimensions') + ', ranked by HWBScore';
-  document.querySelector('#scope-count').textContent = entries.length + ' models evaluated on ' + count + ' ' + (scope === 'all' ? 'cases across three embodiments.' : scopeName.toLowerCase() + ' cases.') + (scope === 'all' ? '' : ' Arrows show the change from the overall rank.');
+  document.querySelector('#board-caption').textContent = tracks[track].label + ', ' + scopeName + ', ' + (detail ? (group === 'all' ? 'all 17 metrics' : metricGroups[group].name) : 'six dimensions') + ', ranked by HWBScore';
+  const modelCount = entries.length + ' ' + (track === 'all' ? '' : tracks[track].label + ' ') + 'models';
+  document.querySelector('#scope-count').textContent = modelCount + ' evaluated on ' + count + ' ' + (scope === 'all' ? 'cases across three embodiments.' : scopeName.toLowerCase() + ' cases.') + (scope === 'all' ? '' : ' Arrows show the change from the rank on all embodiments.');
+  document.querySelector('#track-note').textContent = trackNotes[track](entries.length);
+  document.querySelector('#rankings').dataset.track = track;
   scaleNote.textContent = detail
     ? 'Individual metrics use the paper’s 0–1 scale; HWBScore uses 0–100. A dash marks a metric that does not apply to this subset. The bar under each score is scaled within its own column, and rank follows HWBScore.'
     : 'HWBScore and the six dimension scores use a 0–100 scale, higher is better. The bar under each score is scaled within its own column, and the bold navy bar marks the best score in that column. Select a column heading to sort.';
@@ -298,6 +337,7 @@ function renderGroupChips() {
 
 function changeView({ grow = true } = {}) {
   groupField.hidden = view !== 'metrics';
+  document.querySelectorAll('[data-track]').forEach(button => button.setAttribute('aria-pressed', button.dataset.track === track));
   document.querySelectorAll('[data-scope]').forEach(button => button.setAttribute('aria-pressed', button.dataset.scope === scope));
   document.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed', button.dataset.view === view));
   renderGroupChips();
@@ -305,10 +345,37 @@ function changeView({ grow = true } = {}) {
   renderTable({ grow });
 }
 
+function writeHash() {
+  const path = track === 'all' && scope === 'all' ? '' : '#' + track + (scope === 'all' ? '' : '/' + scopeSlugs[scope]);
+  history.replaceState(null, '', location.pathname + location.search + (path || '#rankings'));
+}
+
+// Returns true when the hash names a board view rather than a page section.
+function readHash() {
+  const [trackPart, scopePart] = decodeURIComponent(location.hash.slice(1)).split('/');
+  if (!Object.hasOwn(tracks, trackPart)) return false;
+  track = trackPart;
+  scope = Object.keys(scopeSlugs).find(key => scopeSlugs[key] === scopePart) ?? 'all';
+  return true;
+}
+
+document.querySelectorAll('[data-track]').forEach(button => button.onclick = () => {
+  if (track === button.dataset.track) return;
+  track = button.dataset.track;
+  if (openModel && modelTypes[openModel] !== tracks[track].type && tracks[track].type) openModel = null;
+  writeHash();
+  changeView();
+});
 document.querySelectorAll('[data-scope]').forEach(button => button.onclick = () => {
   if (scope === button.dataset.scope) return;
   scope = button.dataset.scope;
+  writeHash();
   changeView();
+});
+window.addEventListener('hashchange', () => {
+  if (!readHash() || !scores) return;
+  changeView();
+  document.querySelector('#rankings').scrollIntoView();
 });
 document.querySelectorAll('[data-view]').forEach(button => button.onclick = () => {
   if (view === button.dataset.view) return;
@@ -344,11 +411,13 @@ table.tBodies[0].onclick = event => {
 
 async function loadScores() {
   try {
-    const response = await fetch('assets/results.json?v=manuscript4');
+    const response = await fetch('assets/leaderboard.json?v=vpp2');
     if (!response.ok) throw new Error('Score data unavailable');
     scores = await response.json();
+    const linked = readHash();
     changeView();
     statusMessage.hidden = true;
+    if (linked) document.querySelector('#rankings').scrollIntoView();
   } catch {
     statusMessage.textContent = 'Scores could not be loaded. Reload the page to try again.';
   }

@@ -7,9 +7,9 @@
   <meta name="description" content="Compare HandWorldBench model scores across 17 metrics and three embodiments, and submit an open-source model for evaluation.">
   <link rel="icon" href="assets/mark.svg">
   <link rel="stylesheet" href="style.css?v=leaderboard1">
-  <link rel="stylesheet" href="leaderboard.css?v=board2">
+  <link rel="stylesheet" href="leaderboard.css?v=vpp2">
   <script defer src="metric-groups.js"></script>
-  <script defer src="leaderboard.js?v=board2"></script>
+  <script defer src="leaderboard.js?v=vpp2b"></script>
 </head>
 <body class="board-page">
   <header>
@@ -31,7 +31,7 @@
       <div class="masthead-title">
         <img class="board-wordmark" src="assets/branding/handworldbench.webp" width="1600" height="265" alt="HandWorldBench">
         <h1 id="rankings-title">Leaderboard</h1>
-        <p class="board-intro">Eleven hand-centric world models, scored on 500 reference cases from egocentric human hands, simulated dexterous hands, and real robots. Pick an embodiment to see how the ranking shifts.</p>
+        <p class="board-intro">World models scored on 500 reference cases from egocentric human hands, simulated dexterous hands, and real robots. Pick an embodiment to see how the ranking shifts.</p>
         <p class="masthead-actions"><a class="action-primary" href="#submission">Submit a model</a><a href="https://arxiv.org/abs/2611.24731">Read the paper</a></p>
       </div>
 
@@ -41,6 +41,22 @@
           <div class="news-feed" tabindex="0" role="region" aria-label="Benchmark updates">
             <ol class="news-list">
               <li>
+                <time datetime="2026-11-27" title="Leaderboard update">Nov 27, 2026</time>
+                <div class="news-entry">
+                  <h3><a href="#ti2v">VPP2 joins the TI2V board</a></h3>
+                  <p>We evaluated the Stage-1 video backbone of Video Prediction Policy 2 on all 500 cases. It ranks #2 among all models and #1 on TI2V.</p>
+                  <details class="news-copy">
+                    <summary>About this entry</summary>
+                    <dl>
+                      <div><dt>Evaluated checkpoint</dt><dd>VPP2 Stage-1 video model, 49 frames (<code>vpp2-video-stage1-49f</code>). This is the video prediction backbone, not the full VPP2 policy.</dd></div>
+                      <div><dt>Track</dt><dd>TI2V: task text and the first RGB frame, no hand motion input.</dd></div>
+                      <div><dt>Per embodiment</dt><dd>#1 on simulated hands and real robot, #6 on human hands, among all 12 models.</dd></div>
+                      <div><dt>Code</dt><dd><a href="https://github.com/roboterax/video-prediction-policy-2" target="_blank" rel="noopener noreferrer">roboterax/video-prediction-policy-2</a></dd></div>
+                    </dl>
+                  </details>
+                </div>
+              </li>
+              <li>
                 <time datetime="2026-11-18" title="First paper release">Nov 18, 2026</time>
                 <div class="news-entry">
                   <h3><a href="#rankings">First evaluation round</a></h3>
@@ -49,8 +65,8 @@
                     <summary>What this round covers</summary>
                     <dl>
                       <div><dt>Evaluation set</dt><dd>322 egocentric human-hand cases, 108 simulated-hand cases, and 70 real-robot cases.</dd></div>
-                      <div><dt>Image-to-video baselines</dt><dd>CogVideoX1.5, HunyuanVideo 1.5, Wan2.1, and Wan2.2.</dd></div>
-                      <div><dt>Hand-guided baselines</dt><dd>DWM, EgoHOI, EgoSim, Hand2World, JointControlVideo, PAM, and RynnWorld-Teleop.</dd></div>
+                      <div><dt>TI2V baselines</dt><dd>CogVideoX1.5, HunyuanVideo 1.5, Wan2.1, and Wan2.2.</dd></div>
+                      <div><dt>Hand-conditioned baselines</dt><dd>DWM, EgoHOI, EgoSim, Hand2World, JointControlVideo, PAM, and RynnWorld-Teleop.</dd></div>
                       <div><dt>Score breakdown</dt><dd>17 metrics across six dimensions, reported overall and per embodiment.</dd></div>
                     </dl>
                   </details>
@@ -63,8 +79,14 @@
     </section>
 
     <section id="rankings" class="rankings" aria-label="Model rankings">
+      <div class="board-tracks" role="group" aria-label="Model track">
+        <button type="button" data-track="all" aria-pressed="true">All models</button>
+        <button type="button" data-track="ti2v" aria-pressed="false">TI2V</button>
+        <button type="button" data-track="hand-conditioned" aria-pressed="false">Hand-conditioned</button>
+      </div>
+      <p class="track-note" id="track-note" aria-live="polite"></p>
       <div class="board-scopes" role="group" aria-label="Evaluation subset">
-        <button type="button" data-scope="all" aria-pressed="true" style="--share:1"><span class="scope-name">Overall</span><span class="scope-count">500 cases</span><span class="scope-share" aria-hidden="true"></span></button>
+        <button type="button" data-scope="all" aria-pressed="true" style="--share:1"><span class="scope-name">All embodiments</span><span class="scope-count">500 cases</span><span class="scope-share" aria-hidden="true"></span></button>
         <button type="button" data-scope="human" aria-pressed="false" style="--share:.644"><span class="scope-name">Human hands</span><span class="scope-count">322 cases</span><span class="scope-share" aria-hidden="true"></span></button>
         <button type="button" data-scope="handson" aria-pressed="false" style="--share:.216"><span class="scope-name">Simulated hands</span><span class="scope-count">108 cases</span><span class="scope-share" aria-hidden="true"></span></button>
         <button type="button" data-scope="real_robot" aria-pressed="false" style="--share:.14"><span class="scope-name">Real robot</span><span class="scope-count">70 cases</span><span class="scope-share" aria-hidden="true"></span></button>
@@ -77,8 +99,8 @@
         </div>
         <div class="group-chips" id="group-field" role="group" aria-label="Metric dimension" hidden></div>
         <div class="board-legend" aria-hidden="true">
-          <span class="legend-type" data-type="Hand-guided">Hand-guided</span>
-          <span class="legend-type" data-type="General I2V">General I2V</span>
+          <span class="legend-type" data-type="Hand-conditioned">Hand-conditioned</span>
+          <span class="legend-type" data-type="TI2V">TI2V</span>
           <span class="legend-heat"><span>Lowest in column</span><i></i><span>Best in column</span></span>
         </div>
       </div>
@@ -90,14 +112,14 @@
       <div class="score-notes">
         <p id="scope-count" aria-live="polite"></p>
         <p id="scale-note"></p>
-        <p><strong>General I2V</strong> models use text and an RGB anchor image. <strong>Hand-guided</strong> models also use hand motion controls. Select a model name to compare its ranks across embodiments.</p>
+        <p><strong>TI2V</strong> models use task text and the first RGB frame. <strong>Hand-conditioned</strong> models also receive hand motion. Select a model name to compare its ranks across embodiments.</p>
       </div>
     </section>
 
     <section id="submission" class="submission" aria-labelledby="submission-title">
       <div class="section-aside">
         <h2 id="submission-title">Submit a model</h2>
-        <p>We rerun every submission on all 500 cases across the three embodiments, then add it to the board.</p>
+        <p>We rerun every submission on all 500 cases across the three embodiments. It then appears on the All models board and on the board for its input track.</p>
         <ol class="submit-steps">
           <li><strong>Describe your model</strong><span>Fill in the form. Release links help us reproduce it faster.</span></li>
           <li><strong>Send the email draft</strong><span>The form writes an email to <a href="mailto:learnerwang04@gmail.com">learnerwang04@gmail.com</a> for you to review.</span></li>
@@ -119,7 +141,7 @@
           <label>Contact name *<input name="contact" autocomplete="name" required></label>
           <label>Contact email *<input name="email" type="email" autocomplete="email" required></label>
           <label>Model name and version *<input name="model" required></label>
-          <label>Model interface *<select name="kind" required><option value="">Select interface</option><option>Image and text</option><option>Hand-conditioned generation</option><option>Other</option></select></label>
+          <label>Model interface *<select name="kind" required><option value="">Select interface</option><option>TI2V (text + first frame)</option><option>Hand-conditioned (text + first frame + hand motion)</option><option>Other (we will assign the track)</option></select></label>
           <label>Additional contact (optional)<input name="alternate" placeholder="Other channel or phone number"></label>
           <label>WeChat ID (optional)<input name="wechat"></label>
         </div>
